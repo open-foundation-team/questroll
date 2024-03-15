@@ -2,7 +2,7 @@
 import { useState } from "react";
 
 // Component imports
-import { Die, Drawer, View } from "./components";
+import { Die, DieSum, DieHistory, Drawer, View } from "./components";
 
 
 // Die type
@@ -39,6 +39,19 @@ const App = () => {
   };
 
 
+  // Function to add a die modifier
+  const dieModifier = (action: 'add' | 'sub') => {
+    setRolledValues((rolls) => {
+      const currentRolls = [...rolls];
+      const lastIndex = currentRolls.length - 1;
+      const lastValue = currentRolls[lastIndex];
+      if (action === 'sub') currentRolls[lastIndex] = lastValue - 1;
+      if (action === 'add') currentRolls[lastIndex] = lastValue + 1;
+      return currentRolls;
+    });
+  };
+
+
   // Function to reset all die states
   const resetDieStates = () => {
     setDieStates(initialDieState);
@@ -58,11 +71,10 @@ const App = () => {
 
   return (
     <View>
-      {rolledValues.length ?
-        <p>{rolledValues.at(-1)}</p>
-        :
-        <p>table_translations.craps_notifications</p>
-      }
+      <DieSum
+        rolls={rolledValues}
+        modifierFunction={dieModifier}
+      />
       <Drawer
         showReset={rolledValues.length ? true : false}
         resetFunction={resetDieStates}
