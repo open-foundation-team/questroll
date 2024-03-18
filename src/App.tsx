@@ -6,10 +6,22 @@ import { Die, DieSum, DieHistory, Drawer, View } from "./components";
 
 
 // Die type
+type DieType = 2 | 4 | 6 | 8 | 10 | 12 | 20 | 100;
 interface DieStateType {
-  dieType: 2 | 4 | 6 | 8 | 10 | 12 | 20 | 100,
+  dieType: DieType,
   rolls?: number
 };
+
+// Die history state type
+type DieHistoryType = {
+  type: 'roll',
+  dieType: DieType,
+  rolledValue: number
+} |
+{
+  type: 'modifier',
+  rolledValue: number
+}
 
 
 // App declatation
@@ -17,6 +29,7 @@ const App = () => {
 
   // Application states
   const [rolledValues, setRolledValues] = useState<number[]>([]);
+  const [dieHistory, setDieHistory] = useState<DieHistoryType[]>([]);
 
   // Declaration of die states
   const dieList = [2, 4, 6, 8, 10, 12, 20, 100];
@@ -25,6 +38,7 @@ const App = () => {
       dieType: die as unknown as DieStateType['dieType'],
       rolls: 0
     }
+
   ));
   const [dieStates, setDieStates] = useState<DieStateType[]>(initialDieState);
 
