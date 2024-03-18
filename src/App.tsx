@@ -71,6 +71,9 @@ const App = () => {
 
   return (
     <View>
+      <DieHistory
+        rolls={rolledValues}
+      />
       <DieSum
         rolls={rolledValues}
         modifierFunction={dieModifier}

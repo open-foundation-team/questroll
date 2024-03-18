@@ -1,0 +1,35 @@
+.dieHistory-styled {
+
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    gap: .75rem;
+
+    width: 100%;
+    height: 55%;
+
+    .roll {
+        display: flex;
+        gap: .35rem;
+        width: 2rem;
+
+        .roll-symbol {
+            width: 1rem;
+
+            .symbol {
+                width: .8rem;
+                height: .8rem;
+                border-radius: .1rem;
+                background: #9a9a9a;
+            }
+        }
+
+        .roll-number {
+            font-weight: 600;
+            color: #9a9a9a;
+        }
+    }
+}
