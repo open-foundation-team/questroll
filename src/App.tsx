@@ -5,6 +5,7 @@ import { useState } from "react";
 import { Die, DieSum, DieHistory, Drawer, View } from "./components";
 
 
+// TODO: types should be extracted from main app
 // Die type
 type DieType = 2 | 4 | 6 | 8 | 10 | 12 | 20 | 100;
 interface DieStateType {
@@ -13,34 +14,33 @@ interface DieStateType {
 };
 
 // Die history state type
-type DieHistoryType = {
+export type DieHistoryType = {
   type: 'roll',
   dieType: DieType,
-  rolledValue: number
+  value: number
 } |
 {
   type: 'modifier',
-  rolledValue: number
-}
+  value: number
+};
 
 
 // App declatation
 const App = () => {
 
   // Application states
-  const [rolledValues, setRolledValues] = useState<number[]>([]);
   const [dieHistory, setDieHistory] = useState<DieHistoryType[]>([]);
 
   // Declaration of die states
-  const dieList = [2, 4, 6, 8, 10, 12, 20, 100];
+  const dieList: DieType[] = [2, 4, 6, 8, 10, 12, 20, 100];
   const initialDieState = dieList.map(die => (
     {
       dieType: die as unknown as DieStateType['dieType'],
       rolls: 0
     }
-
   ));
   const [dieStates, setDieStates] = useState<DieStateType[]>(initialDieState);
+
 
   const updateDieState = (id: number) => {
     setDieStates(dieStates.map((die, idx) => {
@@ -55,13 +55,34 @@ const App = () => {
 
   // Function to add a die modifier
   const dieModifier = (action: 'add' | 'sub') => {
-    setRolledValues((rolls) => {
-      const currentRolls = [...rolls];
-      const lastIndex = currentRolls.length - 1;
-      const lastValue = currentRolls[lastIndex];
-      if (action === 'sub') currentRolls[lastIndex] = lastValue - 1;
-      if (action === 'add') currentRolls[lastIndex] = lastValue + 1;
-      return currentRolls;
+    setDieHistory(prev => {
+      const currentHistory = [...prev];
+      const lastIndex = currentHistory.length - 1;
+      const lastValue = currentHistory[lastIndex];
+
+      if (lastValue.type === 'modifier') {
+
+        if (action === 'add') currentHistory[lastIndex] = {
+          ...currentHistory[lastIndex],
+          value: currentHistory[lastIndex].value + 1
+        };
+        if (action === 'sub') currentHistory[lastIndex] = {
+          ...currentHistory[lastIndex],
+          value: currentHistory[lastIndex].value - 1
+        };
+        if (currentHistory[lastIndex].value === 0) {
+          currentHistory.pop();
+        };
+
+        return currentHistory;
+
+      } else {
+
+        return [...currentHistory, {
+          type: 'modifier',
+          value: action === 'add' ? 1 : -1
+        }];
+      }
     });
   };
 
@@ -69,7 +90,7 @@ const App = () => {
   // Function to reset all die states
   const resetDieStates = () => {
     setDieStates(initialDieState);
-    setRolledValues([])
+    setDieHistory([]);
   };
 
 
@@ -78,7 +99,13 @@ const App = () => {
 
     // Roll virtual dice and set value
     const randomNumber = Math.floor(Math.random() * dieList[id]) + 1;
-    setRolledValues(prev => [...prev, randomNumber]);
+
+    // Store roll in history
+    setDieHistory(prev => ([...prev, {
+      type: 'roll',
+      dieType: dieList[id],
+      value: randomNumber
+    }]));
 
     updateDieState(id);
   };
@@ -86,14 +113,14 @@ const App = () => {
   return (
     <View>
       <DieHistory
-        rolls={rolledValues}
+        rolls={dieHistory}
       />
       <DieSum
-        rolls={rolledValues}
+        rolls={dieHistory}
         modifierFunction={dieModifier}
       />
       <Drawer
-        showReset={rolledValues.length ? true : false}
+        showReset={dieHistory.length ? true : false}
         resetFunction={resetDieStates}
       >
         {dieStates.map((die, idx) => (

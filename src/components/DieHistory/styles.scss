@@ -17,13 +17,19 @@
         width: 2rem;
 
         .roll-symbol {
+            display: flex;
+            justify-content: center;
             width: 1rem;
 
             .symbol {
                 width: .8rem;
                 height: .8rem;
-                border-radius: .1rem;
-                background: #9a9a9a;
+                color: #9a9a9a;
+
+                &.die {
+                    border-radius: .1rem;
+                    background: #9a9a9a;
+                }
             }
         }
 

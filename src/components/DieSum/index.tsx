@@ -1,9 +1,12 @@
+// Type imports
+import { DieHistoryType } from '../../App';
+
 // Style imports
 import './styles.scss';
 
 // Component props
 interface DieSumProps {
-    rolls: number[];
+    rolls: DieHistoryType[];
     modifierFunction: (action: 'sub' | 'add') => void;
 }
 
@@ -22,7 +25,7 @@ export const DieSum = ({ rolls, modifierFunction }: DieSumProps) => {
                     </div>
 
                     <div className="totalValue">
-                        {rolls.reduce((acc, cur) => acc + cur, 0)}
+                        {rolls.reduce((acc, cur) => acc + cur.value, 0)}
                     </div>
 
                     <div className="addSubtract-button" onClick={() => modifierFunction('add')}>
