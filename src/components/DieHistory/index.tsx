@@ -1,5 +1,5 @@
 // Type imports
-import { DieHistoryType } from '../../App';
+import { DieHistoryType } from '../../types';
 
 // Style imports
 import './styles.scss';
