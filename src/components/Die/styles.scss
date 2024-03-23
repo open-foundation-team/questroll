@@ -1,0 +1,38 @@
+.die-styled {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    position: relative;
+
+    width: 3rem;
+    height: 3rem;
+
+    background: #000;
+    border-radius: .3rem;
+
+    .die-value {
+        color: #fff;
+        font-size: 1.5rem;
+    }
+
+    .die-rolls {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        position: absolute;
+        top: -.35rem;
+        left: -.35rem;
+
+        height: 1rem;
+        width: 1rem;
+        border-radius: .1rem;
+
+        font-size: .75rem;
+
+        color: #fff;
+        background: #8b8b8b;
+        outline: 2px solid #f3f3f3;
+    }
+}
